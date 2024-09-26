@@ -1,13 +1,15 @@
 import express from 'express';
+import {config} from 'dotenv';
+config();
 
 const app = express();
 
+//test
+// app.get('/',(req,res)=>{
+//     res.send("hello from server :)")
+// })
 
-app.get('/',(req,res)=>{
-    res.send("hello from server :)")
-})
-
-const PORT = 5000;
+const PORT = process.env.PORT || 8080;
 
 
 app.listen(PORT,()=>{
