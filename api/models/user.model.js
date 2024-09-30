@@ -39,19 +39,31 @@ const userSchema = new mongoose.Schema({
     timestamps : true
 })
 
-const User = mongoose.model("User",userSchema);
+
+
+//write this methods and hooks before model is created else they not executed
+
 
 //pre-save hook to hash password before saving to database
 userSchema.pre("save", async function (next){
     if(!this.isModified("password")) return next();
-
+    
     try {
-        const salt = await bcrypt.getSalt(10);
+        const salt = await bcrypt.genSalt(10);
         this.password = await bcrypt.hash(this.password,salt);
         next();
     } catch (error) {
         next(error);
     }
 })
+
+//password check
+userSchema.methods.comparePassword = async function(password){
+    return bcrypt.compare(password,this.password)
+}
+
+
+const User = mongoose.model("User",userSchema);
+
 
 export default User;
