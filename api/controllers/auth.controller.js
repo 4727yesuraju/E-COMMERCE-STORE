@@ -108,3 +108,45 @@ async function setCookies(res,accessToken,refreshToken){
       maxAge : 7 * 24 * 60 * 60 * 1000  //7 days
     })
 }
+
+
+export async function refreshTokenAfterExpires(req,res){
+     try {
+         const refreshToken = req.cookies.refreshToken;
+
+         if(!refreshToken){
+            return res.status(401).json( {error : "No refresh token provided"})
+         }
+
+         const decoded = jwt.verify(refreshToken,process.env.REFRESH_TOKEN_SECRET);
+
+         const storedToken = await redis.get(`refresh_token : ${decoded.userId}`);
+
+         console.log(refreshToken);
+         console.log(storedToken);
+         if(storedToken !== refreshToken){
+            return res.status(401).json({error : "Invalid refresh token"})
+         }
+
+         const accessToken = jwt.sign({userId : decoded.userId},process.env.ACCESS_TOKEN_SECRET);
+
+         res.cookie('accessToken',accessToken,{
+            httpOnly : true,
+            secure : process.env.ENV === 'production',
+            sameSite : 'strict',
+            maxAge : 15 * 60 * 1000
+         })
+        res.status(201).json({message : "new access token is generated"})
+     } catch (error) {
+        res.status(500).json({error : "while refreshtoken " + error.message})
+     }
+}
+
+
+export const getProfile = async (req,res)=>{
+   try {
+      
+   } catch (error) {
+      res.status(500).json({error : "while refreshtoken " + error.message})
+   }
+}
