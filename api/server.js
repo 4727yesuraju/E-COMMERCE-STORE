@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 
 //router
 import authRoutes from './routes/auth.route.js';
+import productRoutes from './routes/product.route.js';
+
 import { connectToDB } from './lib/db.js';
 config();
 
@@ -21,6 +23,7 @@ app.use(cookieParser())
 // })
 
 app.use("/api/auth",authRoutes);
+app.use("/api/product",productRoutes);
 
 
 app.listen(PORT,()=>{
