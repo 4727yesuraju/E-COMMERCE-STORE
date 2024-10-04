@@ -69,7 +69,7 @@ export const deleteProduct = async (req,res)=>{
         }
 
         if(product.image){
-            let publicId = product.image.split("/").pop().split(".")[0];
+            let publicId = product.image.split("/").pop().split(".")[0]; //https://res.cloudinary.com/de7pjet7r/image/upload/v1727429744/vggjocrqtyg4azvpi2uj.jpg
             try {
                 await cloudinary.uploader.destroy(`products/${publicId}`);
                 console.log("deleted image fron cloudinary");

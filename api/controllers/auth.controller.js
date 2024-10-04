@@ -96,7 +96,7 @@ async function storeRefreshToken(userId,refreshToken){
 async function setCookies(res,accessToken,refreshToken){
     res.cookie('accessToken',accessToken,{
       httpOnly : true, //prevent XSS attacks, XSS - cross site scripting attacks (injecting malicious code)
-      secure : process.env.ENV == "production",
+      secure : process.env.ENV === "production",
       sameSite : "strict", //prevent CSRF attack, cross-site request forgery attack (perform unwanted action - giving permissions)
       maxAge : 15 * 60 * 1000  //15 min
     });
