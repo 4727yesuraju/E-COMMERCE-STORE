@@ -1,6 +1,6 @@
 import express from 'express';
-import { protechRoute } from '../middleware/auth.middleware';
-import { addToCart, getCartProducts, removeALlFromCart, updateQuantity } from '../controllers/cart.controller';
+import { protechRoute } from '../middleware/auth.middleware.js';
+import { addToCart, getCartProducts, removeALlFromCart, updateQuantity } from '../controllers/cart.controller.js';
 
 const router = express.Router();
 
