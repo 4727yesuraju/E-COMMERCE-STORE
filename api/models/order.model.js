@@ -30,6 +30,10 @@ const orderSchema = new mongoose.Schema({
         required : true,
         min : 0
    },
+  //  paymentIntent : {
+  //     type : String,
+  //     required : true 
+  //  },
    stripeSessionId : {
      type : String,
      unique : true
