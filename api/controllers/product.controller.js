@@ -11,7 +11,6 @@ export const getAllProducts = async (req,res)=>{
     }
 }
 
-
 export const getFeaturedProducts = async (req,res)=>{
     try {
         let featuredProducts = await redis.get('featured_products');
@@ -31,7 +30,7 @@ export const getFeaturedProducts = async (req,res)=>{
 
         await redis.set('featured_products',JSON.stringify(featuredProducts))
 
-        return res.status(200).json(featuredProducts);
+        return res.status(200).json({featuredProducts, message : "featured productes are fetched successful"});
     } catch (error) {
         res.status(500).json({error : "while getting featured Products : "+error.message})
     }
@@ -40,17 +39,17 @@ export const getFeaturedProducts = async (req,res)=>{
 export const createProduct = async (req,res)=>{
     try {
         const {name, description, price, image, category} = req.body;
-        let coludinaryResponse = null;
+        let cloudinaryResponse = null;
 
         if(image){
-            coludinaryResponse = await cloudinary.uploader.upload(image,{folder : "products"})
+            cloudinaryResponse = await cloudinary.uploader.upload(image,{folder : "products"})
         }
 
         const product = await Product.create({
             name,
             description,
             price,
-            image : coludinaryResponse?.secure_url ? coludinaryResponse.secure_url : "",
+            image : cloudinaryResponse?.secure_url ? cloudinaryResponse.secure_url : "",
             category
         })
         return res.status(201).json({product,message : "product created successfully"})
@@ -58,7 +57,6 @@ export const createProduct = async (req,res)=>{
         res.status(500).json({error : "while creating Product : "+error.message})
     }
 }
-
 
 export const deleteProduct = async (req,res)=>{
     try {
@@ -74,7 +72,7 @@ export const deleteProduct = async (req,res)=>{
                 await cloudinary.uploader.destroy(`products/${publicId}`);
                 console.log("deleted image fron cloudinary");
             } catch (error) {
-                console.log(`error deleting image fron cloudinary ${error.message}`)
+                console.log(`error deleting image from cloudinary ${error.message}`)
             }
         }
         await Product.findByIdAndDelete(req.params.id);
@@ -83,7 +81,6 @@ export const deleteProduct = async (req,res)=>{
         res.status(500).json({error : "while deleting Product : "+error.message})
     }
 }
-
 
 export const getRecommendedProducts = async (req,res)=>{
     try {

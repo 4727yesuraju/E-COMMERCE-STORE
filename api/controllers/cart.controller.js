@@ -5,7 +5,7 @@ export const addToCart = async (req,res)=>{
         const {productId} = req.body;
         const user = req.user;
 
-        const existingItem = user.cartItems.find(item=>item.id==productId)
+        const existingItem = user.cartItems.find(item=>item.id===productId)
         if(existingItem){
             existingItem.quantity += 1;
         }else{
@@ -13,12 +13,11 @@ export const addToCart = async (req,res)=>{
         }
 
         await user.save();
-        res.status(201).json({cartItems : user.cartItems,message : "add to cart"})
+        res.status(201).json({cartItems : user.cartItems,message : "product is added to cart"})
     } catch (error) {
-        res.status(500).json({error : `while adding to cart : ${error.message}`})
+        res.status(500).json({error : `while adding product to cart : ${error.message}`})
     }
 }
-
 
 export const getCartProducts = async (req,res)=>{
     try {
@@ -35,7 +34,6 @@ export const getCartProducts = async (req,res)=>{
     }
 }
 
-
 export const removeALlFromCart = async (req,res)=>{
     try {
         const {productId} = req.body;
@@ -48,7 +46,6 @@ export const removeALlFromCart = async (req,res)=>{
         res.status(500).json({error : `while removing all from cart : ${error.message}`})
     }
 }
-
 
 export const updateQuantity = async (req,res)=>{
     try {
