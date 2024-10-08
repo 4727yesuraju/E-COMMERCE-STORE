@@ -18,7 +18,7 @@ import { connectToDB } from './lib/db.js';
 const app = express();
 const PORT = process.env.PORT || 8080; 
 
-app.use(express.json()); //allows you to parse body of the request
+app.use(express.json({limit : "10mb"})); //allows you to parse body of the request
 app.use(cookieParser())
 
 //test
@@ -27,10 +27,10 @@ app.use(cookieParser())
 // })
 
 app.use("/api/auth",authRoutes);
-app.use("/api/product",productRoutes);
-app.use("/api/cart",cartRoutes);
-app.use("/api/coupon",couponRoutes);
-app.use("/api/payment",paymentRoutes);
+app.use("/api/products",productRoutes);
+app.use("/api/carts",cartRoutes);
+app.use("/api/coupons",couponRoutes);
+app.use("/api/payments",paymentRoutes);
 app.use("/api/analytics",analyticsRoutes);
 
 
